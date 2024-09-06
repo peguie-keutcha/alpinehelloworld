@@ -76,3 +76,34 @@ pipeline {
             }
         }            
     }
+// Déploiement en staging
+        stage('Deploy to Staging') {
+            when {
+                expression { return env.DEPLOY_ENV == 'staging' }
+            }
+            steps {
+                script {
+                    sh '''
+                        echo "Deploying to Staging environment"
+                        ssh user@${STAGING} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                    '''
+                }
+            }
+        }
+
+        // Déploiement en production
+        stage('Deploy to Production') {
+            when {
+                expression { return env.DEPLOY_ENV == 'production' }
+            }
+            steps {
+                script {
+                    sh '''
+                        echo "Deploying to Production environment"
+                        ssh user@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                    '''
+                }
+            }
+        }
+    }
+}
