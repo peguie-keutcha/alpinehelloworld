@@ -1,4 +1,5 @@
 pipeline {
+   agent any
     environment {
         IMAGE_NAME = "${PARAM_IMAGE_NAME}"                   /* Ex. alpinehelloworld */
         APP_EXPOSED_PORT = "${PARAM_PORT_EXPOSED}"
