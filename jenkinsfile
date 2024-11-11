@@ -1,5 +1,4 @@
 pipeline {
-    agent any
     environment {
         IMAGE_NAME = "${PARAM_IMAGE_NAME}"                   /* Ex. alpinehelloworld */
         APP_EXPOSED_PORT = "${PARAM_PORT_EXPOSED}"
@@ -17,6 +16,7 @@ pipeline {
     }
     stages {
         stage('Build image') {
+           agent any
             steps {
                 script {
                     sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
@@ -25,25 +25,15 @@ pipeline {
         }
 
         stage('Tag image') {
+           agent any
             steps {
                 script {
                     sh "docker image tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKERHUB_ID}/${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
-
-        stage('Push image') {
-            steps {
-                script {
-                    sh '''
-                        echo $DOCKERHUB_PASSWORD_PSW | docker login -u $DOCKERHUB_PASSWORD_USR --password-stdin
-                        docker push ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
-                    '''
-                }
-            }
-        }
-
         stage('Run image') {
+           agent any
             steps {
                 script {
                     sh '''
@@ -57,16 +47,19 @@ pipeline {
         }
 
         stage('Test image') {
+           agent any
             steps {
                 script {
                     sh '''
-                        curl -v $IP:$APP_EXPOSED_PORT | grep -q "Hello world!"
+                         curl -v 172.17.0.1:$APP_EXPOSED_PORT | grep -q "Hello world!"
+                        #curl -v $IP:$APP_EXPOSED_PORT | grep -q "Hello world!"
                     '''
                 }
             }
         }
 
         stage('Clean container') {
+           agent any
             steps {
                 script {
                     sh '''
@@ -76,8 +69,25 @@ pipeline {
                 }
             }
         }
+       
+        stage('Push image') {
+           agent any
+            steps {
+                script {
+                    sh '''
+                        echo $DOCKERHUB_PASSWORD_PSW | docker login -u $DOCKERHUB_PASSWORD_USR --password-stdin
+                        docker push ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
+                    '''
+                }
+            }
+        }
+
+       
+
+       
 
         stage('Deploy to Staging') {
+           agent any
             steps {
                 script {
                     sh '''
@@ -89,6 +99,7 @@ pipeline {
         }
 
         stage('Deploy to Production') {
+           agent any
             steps {
                 script {
                     sh '''
