@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-      label 'jenkins-agent'
-    }
+    
     environment {
         IMAGE_NAME = "${PARAM_IMAGE_NAME}"                   /*alpinehelloworld par exemple*/
         APP_EXPOSED_PORT = "${PARAM_PORT_EXPOSED}"
