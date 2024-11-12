@@ -81,7 +81,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        curl -v $IP:$APP_EXPOSED_PORT | grep -q "Hello world!"
+                        curl -v http://192.168.108.155:8050 | grep -q "Hello world!"
                     '''
                 }
             }
