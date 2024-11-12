@@ -48,7 +48,17 @@ pipeline {
             }
         }
 
-      
+        stage('Test image') {
+           agent { label 'agent-jenkins' }
+            steps {
+                script {
+                    sh '''
+                        curl -v http://192.168.108.155:8050 | grep -q "Hello world!"
+                    '''
+                }
+            }
+        }
+
 
         stage('Clean container') {
            agent { label 'agent-jenkins' }
@@ -75,17 +85,6 @@ pipeline {
         }
 
        
-
-        stage('Test image') {
-           agent { label 'agent-jenkins' }
-            steps {
-                script {
-                    sh '''
-                        curl -v http://192.168.108.155:8050 | grep -q "Hello world!"
-                    '''
-                }
-            }
-        }
 
         stage('Deploy to Staging') {
            agent any
