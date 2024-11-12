@@ -9,7 +9,6 @@ pipeline {
         DOCKERHUB_ID = "${PARAM_DOCKERHUB_ID}"
         DOCKERHUB_PASSWORD_USR = "${PARAM_DOCKERHUB_USERNAME}" // ID utilisateur
         DOCKERHUB_PASSWORD_PSW = credentials('dockerhub')      // mot de passe dans Jenkins
-        #DOCKERHUB_PASSWORD = credentials('dockerhub')
         PROD_API_ENDPOINT = "${PARAM_PROD_API_ENDPOINT}"      /* Ex. IP:PORT de l'API eazylabs, 100.25.147.76:1993 */
         PROD_APP_ENDPOINT = "${PARAM_PROD_APP_ENDPOINT}"      /* Ex. IP:PORT de l'application en production */
         INTERNAL_PORT = "${PARAM_INTERNAL_PORT}"              /* Par défaut : 5000 */
