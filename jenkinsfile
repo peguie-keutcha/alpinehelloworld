@@ -92,7 +92,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Deploying to Staging environment"
-                        ssh -o StrictHostKeyChecking=no agent-jenkins@${STAGING} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        ssh agent-jenkins@${STAGING} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
                     '''
                 }
             }
