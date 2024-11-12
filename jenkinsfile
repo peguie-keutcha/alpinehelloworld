@@ -76,7 +76,16 @@ pipeline {
 
        
 
-       
+        stage('Test image') {
+           agent { label 'agent-jenkins' }
+            steps {
+                script {
+                    sh '''
+                        curl -v $IP:$APP_EXPOSED_PORT | grep -q "Hello world!"
+                    '''
+                }
+            }
+        }
 
         stage('Deploy to Staging') {
            agent any
@@ -90,6 +99,7 @@ pipeline {
             }
         }
 
+   
         stage('Deploy to Production') {
            agent any
             steps {
