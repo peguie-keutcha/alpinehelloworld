@@ -87,12 +87,12 @@ pipeline {
        
 
         stage('Deploy to Staging') {
-           agent any
+           agent { label 'agent-jenkins' }
             steps {
                 script {
                     sh '''
                         echo "Deploying to Staging environment"
-                         "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}
                     '''
                 }
             }
@@ -100,12 +100,12 @@ pipeline {
 
    
         stage('Deploy to Production') {
-           agent any
+           agent { label 'agent-jenkins2' }
             steps {
                 script {
                     sh '''
                         echo "Deploying to Production environment"
-                        ssh agent-jenkins@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}
                     '''
                 }
             }
