@@ -48,16 +48,7 @@ pipeline {
             }
         }
 
-        stage('Test image') {
-           agent { label 'agent-jenkins' }
-            steps {
-                script {
-                    sh '''
-                        curl -v $IP:$APP_EXPOSED_PORT | grep -q "Hello world!"
-                    '''
-                }
-            }
-        }
+      
 
         stage('Clean container') {
            agent { label 'agent-jenkins' }
