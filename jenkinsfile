@@ -23,8 +23,16 @@ pipeline {
                     sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
-        }
+       }
 
+       stage('Tag image') {
+           agent any
+            steps {
+                script {
+                    sh "docker image tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKERHUB_ID}/${IMAGE_NAME}:${IMAGE_TAG}"
+                }
+            }
+        } 
        
         stage('Run image') {
            agent { label 'agent-jenkins' }
