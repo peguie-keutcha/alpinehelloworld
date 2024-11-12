@@ -8,8 +8,6 @@ pipeline {
         PRODUCTION = "${PARAM_APP_NAME}"
         DOCKERHUB_ID = "${PARAM_DOCKERHUB_ID}"
         DOCKERHUB_PASSWORD = credentials('dockerhub')
-        PROD_API_ENDPOINT = "${PARAM_PROD_API_ENDPOINT}"      /* Ex. IP:PORT de l'API eazylabs, 100.25.147.76:1993 */
-        PROD_APP_ENDPOINT = "${PARAM_PROD_APP_ENDPOINT}"      /* Ex. IP:PORT de l'application en production */
         INTERNAL_PORT = "${PARAM_INTERNAL_PORT}"              /* Par défaut : 5000 */
         EXTERNAL_PORT = "${PARAM_PORT_EXPOSED}"
         CONTAINER_IMAGE = "${DOCKERHUB_ID}/${IMAGE_NAME}:${IMAGE_TAG}"
