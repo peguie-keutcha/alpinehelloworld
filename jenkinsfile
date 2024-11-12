@@ -92,7 +92,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Deploying to Staging environment"
-                        ssh agent-jenkins@${STAGING} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        ssh -o StrictHostKeyChecking=no agent-jenkins@${STAGING} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
                     '''
                 }
             }
@@ -105,7 +105,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Deploying to Production environment"
-                        ssh agent-jenkins@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        ssh agent-jenkins2@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
                     '''
                 }
             }
