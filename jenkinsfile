@@ -4,8 +4,8 @@ pipeline {
         IMAGE_NAME = "${PARAM_IMAGE_NAME}"                   /* Ex. alpinehelloworld */
         APP_EXPOSED_PORT = "${PARAM_PORT_EXPOSED}"
         IMAGE_TAG = "${PARAM_IMAGE_TAG}"                      /* Ex. latest */
-        STAGING = "${PARAM_APP_NAME-staging}"
-        PRODUCTION = "${PARAM_APP_NAME-prod}"
+        STAGING = "${PARAM_APP_NAME}"
+        PRODUCTION = "${PARAM_APP_NAME}"
         DOCKERHUB_ID = "${PARAM_DOCKERHUB_ID}"
         DOCKERHUB_PASSWORD = credentials('dockerhub')
         PROD_API_ENDPOINT = "${PARAM_PROD_API_ENDPOINT}"      /* Ex. IP:PORT de l'API eazylabs, 100.25.147.76:1993 */
@@ -105,7 +105,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Deploying to Production environment"
-                        ssh agent-jenkins2@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
+                        ssh agent-jenkins@${PROD_APP_ENDPOINT} "docker pull ${CONTAINER_IMAGE} && docker rm -f ${IMAGE_NAME} || true && docker run -d --name ${IMAGE_NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} ${CONTAINER_IMAGE}"
                     '''
                 }
             }
